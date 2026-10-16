@@ -11,5 +11,3 @@ services:
         value: 3.12.10
       - key: SKILLBRIDGE_DATA_FILE
         value: /tmp/skillbridge_data.json
-      - key: OPENAI_API_KEY
-        sync: false
