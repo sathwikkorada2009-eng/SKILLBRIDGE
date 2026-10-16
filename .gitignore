@@ -1,0 +1,15 @@
+/Include/
+/Lib/
+/Scripts/
+/pyvenv.cfg
+/__pycache__/
+**/__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+/skillbridge_data.json
+/skillbridge_data.tmp
+.pytest_cache/
+.vercel/
+node_modules/
