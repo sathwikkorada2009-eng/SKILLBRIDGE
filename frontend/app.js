@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const defaultApiUrl = "http://127.0.0.1:8000/api";
+  const defaultApiUrl = `${window.location.origin}/api`;
   const storedApiUrl = localStorage.getItem("skillbridge-api-url");
   let apiBase = (storedApiUrl || defaultApiUrl).replace(/\/+$/, "");
   let students = [];
