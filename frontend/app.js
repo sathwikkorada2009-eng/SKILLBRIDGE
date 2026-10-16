@@ -69,12 +69,13 @@
     target.innerHTML = list.map((item, index) => {
       const isBooked = myBookings.some((booking) => booking.id === item.id);
       const full = item.seats_remaining <= 0;
+      const needsProfile = !currentStudent();
       return `<article class="class-card">
         <div class="class-topline"><span class="class-symbol">${["⌘", "◈", "⌁", "✳", "⌗"][index % 5]}</span><span class="class-tag">${escapeHtml(item.subject)}</span></div>
         <h3>${escapeHtml(item.title)}</h3>
         <p class="class-meta">With ${escapeHtml(item.tutor)}<br>${escapeHtml(item.slot)} · ${item.average_rating ? `★ ${escapeHtml(item.average_rating)}` : "New session"}</p>
         <div class="class-footer"><span class="capacity">${escapeHtml(item.seats_remaining)} of ${escapeHtml(item.capacity)} seats left</span>
-        <button class="button ${isBooked ? "button-outline" : "button-dark"}" data-book="${escapeHtml(item.id)}" ${isBooked || full || !currentStudent() ? "disabled" : ""}>${isBooked ? "You're in ✓" : full ? "Full" : "Book a seat"}</button></div>
+        <button class="button ${isBooked || needsProfile ? "button-outline" : "button-dark"}" data-book="${escapeHtml(item.id)}" ${isBooked || full ? "disabled" : ""}>${isBooked ? "You're in ✓" : full ? "Full" : needsProfile ? "Choose profile to book" : "Book a seat"}</button></div>
       </article>`;
     }).join("");
   }
@@ -199,6 +200,11 @@
     const ratingsButton = event.target.closest("[data-ratings]");
     try {
       if (bookButton) {
+        if (!currentStudent()) {
+          notify("Choose a demo profile from the sidebar before booking a session.");
+          $("#student-select").focus();
+          return;
+        }
         const result = await api("/bookings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
